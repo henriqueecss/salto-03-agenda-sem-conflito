@@ -45,8 +45,10 @@ A API valida as demais regras (expediente, almoço, feriados, antecedência) ant
 Para reproduzir a demonstração acima (API no ar, banco limpo): `.\scripts\demo-concorrencia.ps1`.
 O roteiro da gravação está em `docs/demo.tape` (ferramenta [VHS](https://github.com/charmbracelet/vhs)).
 
-Vídeo de 1m37s usando a API pelo Swagger UI: reserva, conflito, sobreposição parcial, horário encostado,
-cancelamento e nova reserva no mesmo horário: [docs/demo-swagger-720p.mp4](docs/demo-swagger-720p.mp4).
+Usando a API pelo Swagger UI: reserva, conflito, sobreposição parcial, horário encostado, cancelamento e
+nova reserva no mesmo horário ([versão em vídeo](docs/demo-swagger-720p.mp4)).
+
+![Demo no Swagger UI: reserva, conflito e cancelamento](docs/demo-swagger.gif)
 
 ## Regras de negócio
 
