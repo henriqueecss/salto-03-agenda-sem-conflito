@@ -20,7 +20,7 @@ public class ApiClient {
         }
     }
 
-    private final HttpClient http = HttpClient.newHttpClient();
+    private final HttpClient http = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
     private final JsonMapper json = JsonMapper.builder().build();
     private final String baseUrl;
 
