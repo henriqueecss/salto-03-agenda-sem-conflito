@@ -1,5 +1,6 @@
 package br.com.jacaranda.agenda.catalog;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
@@ -51,6 +52,16 @@ public class CatalogRepository {
                         rs.getObject("lunch_start", LocalTime.class), rs.getObject("lunch_end", LocalTime.class),
                         weekdaysOf(id), serviceIdsOf(id)))
                 .optional();
+    }
+
+    public boolean isHoliday(LocalDate date) {
+        return jdbc.sql("SELECT EXISTS (SELECT 1 FROM holiday WHERE date = :d)")
+                .param("d", date).query(Boolean.class).single();
+    }
+
+    public boolean isAbsent(String professionalId, LocalDate date) {
+        return jdbc.sql("SELECT EXISTS (SELECT 1 FROM absence WHERE professional_id = :p AND date = :d)")
+                .param("p", professionalId).param("d", date).query(Boolean.class).single();
     }
 
     private List<Integer> weekdaysOf(String professionalId) {

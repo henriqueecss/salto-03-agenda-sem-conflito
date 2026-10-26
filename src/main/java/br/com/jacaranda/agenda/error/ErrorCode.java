@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 
 public enum ErrorCode {
 
+    REQUISICAO_INVALIDA(HttpStatus.BAD_REQUEST, "Requisicao invalida"),
     HORARIO_INVALIDO(HttpStatus.UNPROCESSABLE_CONTENT, "Horario invalido"),
     SERVICO_NAO_OFERECIDO(HttpStatus.UNPROCESSABLE_CONTENT, "Servico nao oferecido pelo profissional"),
     ANTECEDENCIA_INVALIDA(HttpStatus.UNPROCESSABLE_CONTENT, "Antecedencia invalida"),
