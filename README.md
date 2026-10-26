@@ -5,6 +5,8 @@
 Projeto 3 de 15 do Salto. API REST que impede, no banco de dados, que dois pacientes fiquem com o mesmo
 horário do mesmo profissional, mesmo com muitos pedidos simultâneos.
 
+![50 pedidos simultaneos: 1 criada, 49 recusadas pelo banco](docs/demo.gif)
+
 ## O problema
 
 A Clínica Jacarandá (fictícia, em Lavras) tem três profissionais e agenda tudo por WhatsApp. Quando dois
@@ -39,6 +41,9 @@ A API valida as demais regras (expediente, almoço, feriados, antecedência) ant
 - **Aceitação:** os 26 passos de `data/cenarios.csv` rodam em sequência pela API real, contra PostgreSQL
   de verdade (Testcontainers), e passam.
 - **Total:** 101 testes (unitários, banco, API e concorrência), rodando no GitHub Actions.
+
+Para reproduzir a demonstração acima (API no ar, banco limpo): `.\scripts\demo-concorrencia.ps1`.
+O roteiro da gravação está em `docs/demo.tape` (ferramenta [VHS](https://github.com/charmbracelet/vhs)).
 
 ## Regras de negócio
 
