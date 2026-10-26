@@ -20,7 +20,7 @@ public class ProblemDetailsHandler {
     @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class,
             MissingServletRequestParameterException.class})
     ProblemDetail unreadable(Exception e) {
-        return problem(ErrorCode.REQUISICAO_INVALIDA, "Corpo ou parametro da requisicao em formato invalido.");
+        return problem(ErrorCode.REQUISICAO_INVALIDA, "Corpo ou parâmetro da requisição em formato inválido.");
     }
 
     private static ProblemDetail problem(ErrorCode code, String detail) {

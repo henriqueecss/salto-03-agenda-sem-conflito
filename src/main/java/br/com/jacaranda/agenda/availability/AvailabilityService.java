@@ -39,11 +39,11 @@ public class AvailabilityService {
 
     public Availability find(String serviceId, LocalDate date, String professionalId) {
         ClinicService service = catalog.findService(serviceId).orElseThrow(() -> notFound(
-                "Servico %s nao existe.".formatted(serviceId)));
+                "Serviço %s não existe.".formatted(serviceId)));
         List<Professional> professionals = professionalId == null
                 ? catalog.findProfessionals()
                 : List.of(catalog.findProfessional(professionalId).orElseThrow(() -> notFound(
-                        "Profissional %s nao existe.".formatted(professionalId))));
+                        "Profissional %s não existe.".formatted(professionalId))));
 
         List<AvailableSlot> slots = new ArrayList<>();
         for (Professional professional : professionals) {

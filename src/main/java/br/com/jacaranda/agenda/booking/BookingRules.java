@@ -33,11 +33,11 @@ public class BookingRules {
             boolean holiday, boolean absent) {
         if (start.getMinute() % rules.startStepMinutes() != 0 || start.getSecond() != 0 || start.getNano() != 0) {
             throw new BusinessRuleException(ErrorCode.HORARIO_INVALIDO,
-                    "O horario deve comecar em multiplos de %d minutos.".formatted(rules.startStepMinutes()));
+                    "O horário deve começar em múltiplos de %d minutos.".formatted(rules.startStepMinutes()));
         }
         if (!professional.serviceIds().contains(service.id())) {
             throw new BusinessRuleException(ErrorCode.SERVICO_NAO_OFERECIDO,
-                    "%s nao realiza o servico %s.".formatted(professional.name(), service.name()));
+                    "%s não realiza o serviço %s.".formatted(professional.name(), service.name()));
         }
 
         ZonedDateTime startsAt = start.atZone(rules.zone());
@@ -56,12 +56,12 @@ public class BookingRules {
         Instant latest = now.plusDays(rules.maxNoticeDays()).toInstant();
         if (startsAt.toInstant().isBefore(earliest)) {
             throw new BusinessRuleException(ErrorCode.ANTECEDENCIA_INVALIDA,
-                    "A reserva precisa ser feita com pelo menos %d minutos de antecedencia."
+                    "A reserva precisa ser feita com pelo menos %d minutos de antecedência."
                             .formatted(rules.minNoticeMinutes()));
         }
         if (startsAt.toInstant().isAfter(latest)) {
             throw new BusinessRuleException(ErrorCode.ANTECEDENCIA_INVALIDA,
-                    "A reserva pode ser feita com no maximo %d dias de antecedencia.".formatted(rules.maxNoticeDays()));
+                    "A reserva pode ser feita com no máximo %d dias de antecedência.".formatted(rules.maxNoticeDays()));
         }
     }
 
@@ -69,7 +69,7 @@ public class BookingRules {
         int isoWeekday = start.getDayOfWeek().getValue();
         if (holiday || absent || !professional.weekdays().contains(isoWeekday)) {
             throw new BusinessRuleException(ErrorCode.DIA_FECHADO,
-                    "%s nao atende em %s.".formatted(professional.name(), start.toLocalDate()));
+                    "%s não atende em %s.".formatted(professional.name(), start.toLocalDate()));
         }
     }
 
@@ -83,7 +83,7 @@ public class BookingRules {
                 && (!endsSameDay || endTime.isAfter(professional.lunchStart()));
         if (!insideWorkHours || touchesLunch) {
             throw new BusinessRuleException(ErrorCode.FORA_DO_EXPEDIENTE,
-                    "O atendimento precisa caber no expediente (%s a %s) e fora do almoco (%s a %s)."
+                    "O atendimento precisa caber no expediente (%s a %s) e fora do almoço (%s a %s)."
                             .formatted(professional.workStart(), professional.workEnd(),
                                     professional.lunchStart(), professional.lunchEnd()));
         }
