@@ -3,6 +3,7 @@ package br.com.jacaranda.agenda.booking;
 import java.net.URI;
 import java.util.UUID;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,9 @@ public class BookingController {
         this.service = service;
     }
 
+    @Operation(summary = "Cria uma reserva",
+            description = "Erros: HORARIO_INVALIDO, SERVICO_NAO_OFERECIDO, ANTECEDENCIA_INVALIDA, DIA_FECHADO, "
+                    + "FORA_DO_EXPEDIENTE (422) e CONFLITO (409).")
     @PostMapping
     ResponseEntity<BookingResponse> create(@RequestBody CreateBooking request) {
         requireFilled(request);
@@ -31,11 +35,13 @@ public class BookingController {
         return ResponseEntity.created(URI.create("/bookings/" + booking.id())).body(response(booking));
     }
 
+    @Operation(summary = "Consulta uma reserva")
     @GetMapping("/{id}")
     BookingResponse get(@PathVariable UUID id) {
         return response(service.find(id));
     }
 
+    @Operation(summary = "Cancela uma reserva e libera o horário", description = "Cancelar de novo retorna JA_CANCELADA (409).")
     @PostMapping("/{id}/cancel")
     BookingResponse cancel(@PathVariable UUID id) {
         return response(service.cancel(id));

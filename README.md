@@ -38,7 +38,7 @@ A API valida as demais regras (expediente, almoço, feriados, antecedência) ant
   por sorte.
 - **Aceitação:** os 26 passos de `data/cenarios.csv` rodam em sequência pela API real, contra PostgreSQL
   de verdade (Testcontainers), e passam.
-- **Total:** 98 testes (unitários, banco, API e concorrência), rodando no GitHub Actions.
+- **Total:** 100 testes (unitários, banco, API e concorrência), rodando no GitHub Actions.
 
 ## Regras de negócio
 
@@ -75,6 +75,9 @@ Problem Details (RFC 9457) com o código no campo `codigo`.
 | `GET /bookings/{id}` | consulta reserva |
 | `POST /bookings/{id}/cancel` | cancela reserva |
 
+Com a API no ar, a documentação interativa (Swagger UI) fica em http://localhost:8080/swagger-ui/index.html e o
+contrato OpenAPI em `/v3/api-docs`.
+
 Exemplo (o horário de entrada é local, sem offset; as respostas trazem `-03:00`):
 
 ```bash
@@ -101,8 +104,8 @@ src/main/java/br/com/jacaranda/agenda/
 src/main/resources/db/migration/V1__schema.sql   schema e constraint de exclusão (Flyway)
 ```
 
-Stack: Java 25, Spring Boot 4.1, Spring JDBC (`JdbcClient`), PostgreSQL 17, Flyway, JUnit 5, AssertJ e
-Testcontainers.
+Stack: Java 25, Spring Boot 4.1, Spring JDBC (`JdbcClient`), PostgreSQL 17, Flyway, springdoc-openapi, JUnit 5,
+AssertJ e Testcontainers.
 
 ## Modelo de dados
 
@@ -125,5 +128,5 @@ Sem `make`: `docker compose up -d --wait` e `./mvnw spring-boot:run` ou `./mvnw 
 
 ## Próximos passos
 
-Documentação OpenAPI/Swagger, bloqueio temporário do horário enquanto o paciente confirma e lembrete por
+Bloqueio temporário do horário enquanto o paciente confirma e lembrete por
 e-mail.

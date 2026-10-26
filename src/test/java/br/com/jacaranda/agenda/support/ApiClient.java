@@ -58,9 +58,10 @@ public class ApiClient {
         try {
             HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
             String text = response.body();
-            return new Reply(response.statusCode(),
-                    response.headers().firstValue("Content-Type").orElse(""),
-                    text == null || text.isBlank() ? json.createObjectNode() : json.readTree(text));
+            String contentType = response.headers().firstValue("Content-Type").orElse("");
+            boolean isJson = contentType.contains("json") && text != null && !text.isBlank();
+            return new Reply(response.statusCode(), contentType,
+                    isJson ? json.readTree(text) : json.createObjectNode());
         } catch (IOException e) {
             throw new IllegalStateException(e);
         } catch (InterruptedException e) {
