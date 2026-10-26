@@ -1,0 +1,51 @@
+{
+  "name": "Clinica Jacaranda",
+  "holidays": [
+    { "date": "2026-11-02", "name": "Finados" },
+    { "date": "2026-11-15", "name": "Proclamacao da Republica" },
+    { "date": "2026-11-20", "name": "Dia Nacional de Zumbi e da Consciencia Negra" },
+    { "date": "2026-12-25", "name": "Natal" }
+  ],
+  "services": [
+    { "id": "S1", "name": "Consulta", "durationMinutes": 30, "price": 45.00 },
+    { "id": "S2", "name": "Retorno", "durationMinutes": 20, "price": 30.00 },
+    { "id": "S3", "name": "Consulta com avaliacao completa", "durationMinutes": 50, "price": 70.00 },
+    { "id": "S4", "name": "Procedimento ambulatorial", "durationMinutes": 90, "price": 120.00 },
+    { "id": "S5", "name": "Afericao e triagem", "durationMinutes": 10, "price": 15.00 }
+  ],
+  "professionals": [
+    {
+      "id": "PRO1",
+      "name": "Dr. Otavio Menezes",
+      "serviceIds": ["S1", "S2", "S3", "S5"],
+      "weekdays": [1, 2, 3, 4, 5, 6],
+      "workStart": "09:00",
+      "workEnd": "19:00",
+      "lunchStart": "12:00",
+      "lunchEnd": "13:00",
+      "absences": []
+    },
+    {
+      "id": "PRO2",
+      "name": "Dra. Helena Albuquerque",
+      "serviceIds": ["S1", "S2", "S3", "S4", "S5"],
+      "weekdays": [2, 3, 4, 5, 6],
+      "workStart": "10:00",
+      "workEnd": "20:00",
+      "lunchStart": "14:00",
+      "lunchEnd": "15:00",
+      "absences": []
+    },
+    {
+      "id": "PRO3",
+      "name": "Dr. Caio Barbosa",
+      "serviceIds": ["S1", "S2", "S3", "S5"],
+      "weekdays": [1, 2, 3, 4, 5],
+      "workStart": "09:00",
+      "workEnd": "18:00",
+      "lunchStart": "12:00",
+      "lunchEnd": "13:00",
+      "absences": [{ "date": "2026-11-06", "reason": "Congresso de atualizacao medica" }]
+    }
+  ]
+}
