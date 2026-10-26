@@ -116,15 +116,27 @@ AssertJ e Testcontainers.
 
 ## Como rodar
 
-Requisitos: JDK 21 ou 25 (com `JAVA_HOME` apontando para ele) e Docker em execução.
+Requisitos: JDK 21 ou 25 e Docker em execução. O Maven vem junto no projeto (`mvnw`), não precisa instalar.
+O `JAVA_HOME` precisa apontar para o JDK 21 ou 25, senão o build usa o Java que estiver no PATH.
 
-```bash
-make up      # sobe o PostgreSQL (docker compose)
-make run     # sobe a API em http://localhost:8080
-make test    # build e todos os testes (os testes usam Testcontainers, não precisam do make up)
+Windows (PowerShell):
+
+```powershell
+$env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-25.0.5.8-hotspot"   # ajuste para o seu JDK
+$env:Path = "$env:JAVA_HOMEin;$env:Path"
+
+.\mvnw.cmd verify                  # roda todos os testes (sobe o PostgreSQL sozinho via Testcontainers)
+
+docker compose up -d --wait        # PostgreSQL local para rodar a API
+.\mvnw.cmd spring-boot:run         # API em http://localhost:8080 (Swagger em /swagger-ui/index.html)
+docker compose down -v             # ao terminar
 ```
 
-Sem `make`: `docker compose up -d --wait` e `./mvnw spring-boot:run` ou `./mvnw verify`.
+Linux e macOS: `export JAVA_HOME=/caminho/do/jdk`, `./mvnw verify`, `make up` e `make run` (ou os mesmos comandos
+`docker compose` e `./mvnw` acima).
+
+A antecedência é calculada com o relógio real: use datas entre 1 hora e 30 dias à frente de hoje, em dias úteis
+do profissional (os exemplos acima usam novembro de 2026).
 
 ## Próximos passos
 
