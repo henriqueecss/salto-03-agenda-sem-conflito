@@ -1,0 +1,17 @@
+target/
+build/
+.gradle/
+.idea/
+*.iml
+.vscode/
+.env
+*.log
+.DS_Store
+jdk-*/
+venv/
+.venv/
+
+# arquivos internos
+CLAUDE.md
+PROMPT_INICIAL.md
+.claude/

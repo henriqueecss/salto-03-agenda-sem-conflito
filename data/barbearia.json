@@ -1,0 +1,52 @@
+{
+  "nome": "Barbearia Ipê (fictícia, Lavras)",
+  "fuso": "America/Sao_Paulo",
+  "agora_nos_testes": "2026-10-31T08:30:00-03:00",
+  "regras": {
+    "antecedencia_minima_minutos": 60,
+    "antecedencia_maxima_dias": 30,
+    "inicio_em_multiplos_de_minutos": 10
+  },
+  "feriados": [
+    { "data": "2026-11-02", "nome": "Finados" },
+    { "data": "2026-11-15", "nome": "Proclamação da República" },
+    { "data": "2026-11-20", "nome": "Dia Nacional de Zumbi e da Consciência Negra" },
+    { "data": "2026-12-25", "nome": "Natal" }
+  ],
+  "servicos": [
+    { "id": "S1", "nome": "Corte", "duracao_minutos": 30, "preco": 45.00 },
+    { "id": "S2", "nome": "Barba", "duracao_minutos": 20, "preco": 30.00 },
+    { "id": "S3", "nome": "Corte e barba", "duracao_minutos": 50, "preco": 70.00 },
+    { "id": "S4", "nome": "Pigmentação", "duracao_minutos": 90, "preco": 120.00 },
+    { "id": "S5", "nome": "Sobrancelha", "duracao_minutos": 10, "preco": 15.00 }
+  ],
+  "profissionais": [
+    {
+      "id": "PRO1",
+      "nome": "Diego",
+      "servicos": ["S1", "S2", "S3", "S5"],
+      "dias_da_semana": [1, 2, 3, 4, 5, 6],
+      "expediente": { "inicio": "09:00", "fim": "19:00" },
+      "almoco": { "inicio": "12:00", "fim": "13:00" },
+      "ausencias": []
+    },
+    {
+      "id": "PRO2",
+      "nome": "Renata",
+      "servicos": ["S1", "S2", "S3", "S4", "S5"],
+      "dias_da_semana": [2, 3, 4, 5, 6],
+      "expediente": { "inicio": "10:00", "fim": "20:00" },
+      "almoco": { "inicio": "14:00", "fim": "15:00" },
+      "ausencias": []
+    },
+    {
+      "id": "PRO3",
+      "nome": "Tiago",
+      "servicos": ["S1", "S2", "S3", "S5"],
+      "dias_da_semana": [1, 2, 3, 4, 5],
+      "expediente": { "inicio": "09:00", "fim": "18:00" },
+      "almoco": { "inicio": "12:00", "fim": "13:00" },
+      "ausencias": [{ "data": "2026-11-06", "motivo": "Curso de visagismo" }]
+    }
+  ]
+}

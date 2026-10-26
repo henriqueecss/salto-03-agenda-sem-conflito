@@ -1,0 +1,27 @@
+passo;acao;ref;profissional;servico;inicio;esperado;observacao
+1;reservar;A1;PRO1;S1;2026-11-03T09:00;criada;Reserva simples (09:00 a 09:30)
+2;reservar;;PRO1;S2;2026-11-03T09:20;CONFLITO;Começa dentro da A1
+3;reservar;A2;PRO1;S2;2026-11-03T09:30;criada;Começa exatamente quando a A1 termina
+4;reservar;A3;PRO3;S1;2026-11-03T09:00;criada;Mesmo horário da A1, outro profissional
+5;reservar;;PRO1;S3;2026-11-03T11:30;FORA_DO_EXPEDIENTE;Terminaria 12:20, invade o almoço
+6;reservar;A4;PRO1;S1;2026-11-03T11:30;criada;Termina exatamente no início do almoço
+7;reservar;;PRO1;S3;2026-11-03T18:20;FORA_DO_EXPEDIENTE;Terminaria 19:10, depois do fechamento
+8;reservar;A5;PRO1;S3;2026-11-03T18:10;criada;Termina exatamente no fechamento
+9;reservar;;PRO1;S1;2026-11-02T10:00;DIA_FECHADO;Feriado de Finados
+10;reservar;;PRO2;S1;2026-11-09T10:00;DIA_FECHADO;A Renata não trabalha às segundas
+11;reservar;;PRO3;S1;2026-11-06T10:00;DIA_FECHADO;Ausência do Tiago (curso)
+12;reservar;;PRO1;S4;2026-11-04T10:00;SERVICO_NAO_OFERECIDO;Só a Renata faz pigmentação
+13;reservar;A6;PRO2;S4;2026-11-04T10:00;criada;Pigmentação de 10:00 a 11:30
+14;reservar;;PRO2;S1;2026-11-04T11:00;CONFLITO;Cai no meio da pigmentação
+15;reservar;;PRO2;S5;2026-11-04T09:50;FORA_DO_EXPEDIENTE;A Renata começa às 10:00
+16;reservar;;PRO1;S1;2026-10-31T09:00;ANTECEDENCIA_INVALIDA;Só 30 min de antecedência
+17;reservar;A7;PRO1;S1;2026-10-31T09:30;criada;Exatamente 1 hora de antecedência
+18;reservar;;PRO1;S1;2026-12-01T10:00;ANTECEDENCIA_INVALIDA;Mais de 30 dias à frente
+19;reservar;;PRO1;S1;2026-11-05T10:15;HORARIO_INVALIDO;Início fora dos múltiplos de 10 minutos
+20;reservar;;PRO1;S1;2026-10-28T10:00;ANTECEDENCIA_INVALIDA;Data no passado
+21;cancelar;A1;;;;cancelada;Libera 09:00 a 09:30
+22;reservar;A8;PRO1;S2;2026-11-03T09:00;criada;Usa o horário liberado (09:00 a 09:20)
+23;cancelar;A1;;;;JA_CANCELADA;Cancelar de novo não pode
+24;reservar;A9;PRO1;S5;2026-11-03T09:20;criada;Encaixe exato entre A8 (fim 09:20) e A2 (início 09:30)
+25;reservar;;PRO3;S1;2026-11-07T10:00;DIA_FECHADO;O Tiago não trabalha aos sábados
+26;reservar;;PRO2;S3;2026-11-20T10:00;DIA_FECHADO;Feriado da Consciência Negra
