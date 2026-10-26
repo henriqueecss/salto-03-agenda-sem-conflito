@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/henriqueecss/salto-03-agenda-sem-conflito/actions/workflows/ci.yml/badge.svg)](https://github.com/henriqueecss/salto-03-agenda-sem-conflito/actions/workflows/ci.yml)
 
-Projeto 3 de 15 do Salto. API REST que impede, no banco de dados, que dois pacientes fiquem com o mesmo
+API REST que impede, no banco de dados, que dois pacientes fiquem com o mesmo
 horário do mesmo profissional, mesmo com muitos pedidos simultâneos.
 
 ![50 pedidos simultaneos: 1 criada, 49 recusadas pelo banco](docs/demo.gif)
