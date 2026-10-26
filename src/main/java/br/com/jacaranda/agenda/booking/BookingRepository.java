@@ -2,6 +2,7 @@ package br.com.jacaranda.agenda.booking;
 
 import java.sql.SQLException;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -66,6 +67,18 @@ public class BookingRepository {
                         rs.getTimestamp("created_at").toInstant(),
                         rs.getTimestamp("cancelled_at") == null ? null : rs.getTimestamp("cancelled_at").toInstant()))
                 .optional();
+    }
+
+    public List<Slot> findActiveOnDay(String professionalId, Instant from, Instant to) {
+        return jdbc.sql("""
+                SELECT starts_at, ends_at FROM booking
+                WHERE professional_id = :p AND status = 'ACTIVE' AND starts_at < :to AND ends_at > :from
+                """)
+                .param("p", professionalId)
+                .param("from", java.sql.Timestamp.from(from))
+                .param("to", java.sql.Timestamp.from(to))
+                .query((rs, n) -> new Slot(rs.getTimestamp("starts_at").toInstant(), rs.getTimestamp("ends_at").toInstant()))
+                .list();
     }
 
     /**
