@@ -97,3 +97,18 @@ reserva confirmada e recebe `23P01` na hora. A suíte de concorrência caiu de 3
 - O lock é por profissional (hash do id): reservas de profissionais diferentes não esperam umas pelas outras.
 - Alternativa descartada: tratar `40P01` como conflito ou repetir o INSERT. Funciona, mas cada colisão custa um
   `deadlock_timeout` inteiro de latência.
+
+## 6. Pool de conexões travando com mais pedidos que conexões (descoberto na demo)
+
+Os testes de concorrência usam um pool de 60 conexões para 50 threads, de propósito, para a corrida ser real.
+Ao rodar a API de verdade com o pool padrão do Hikari (10 conexões), 45 de 50 pedidos simultâneos terminaram em
+erro 500 depois de 30 s (`Connection is not available, request timed out`).
+
+Causa: `findProfessional` fazia outras consultas (dias e serviços) de dentro do mapeador da primeira. Cada pedido
+segurava uma conexão esperando uma segunda; com mais pedidos que conexões, todos seguravam uma e ninguém
+conseguia a segunda. Correção: as consultas rodam em sequência, devolvendo a conexão antes da próxima. Ficou um
+teste de regressão com o pool padrão (`ConcurrencyDefaultPoolTest`), que reproduz o travamento sem a correção.
+
+Lição: o pool grande do teste de corrida escondia esse problema. Convém testar também com a configuração de
+produção.
+

@@ -38,7 +38,7 @@ A API valida as demais regras (expediente, almoço, feriados, antecedência) ant
   por sorte.
 - **Aceitação:** os 26 passos de `data/cenarios.csv` rodam em sequência pela API real, contra PostgreSQL
   de verdade (Testcontainers), e passam.
-- **Total:** 100 testes (unitários, banco, API e concorrência), rodando no GitHub Actions.
+- **Total:** 101 testes (unitários, banco, API e concorrência), rodando no GitHub Actions.
 
 ## Regras de negócio
 

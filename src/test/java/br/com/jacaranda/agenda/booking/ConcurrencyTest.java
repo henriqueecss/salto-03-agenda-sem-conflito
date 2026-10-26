@@ -8,12 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.function.IntFunction;
 
 import org.junit.jupiter.api.AfterEach;
@@ -30,6 +25,7 @@ import br.com.jacaranda.agenda.TestcontainersConfiguration;
 import br.com.jacaranda.agenda.support.ApiClient;
 import br.com.jacaranda.agenda.support.ApiClient.Reply;
 import br.com.jacaranda.agenda.support.FixedClockConfig;
+import br.com.jacaranda.agenda.support.Parallel;
 
 /**
  * Prova de que a garantia mora no banco. O pool de conexoes e maior que o numero de threads: com um pool
@@ -67,7 +63,7 @@ class ConcurrencyTest {
 
     @RepeatedTest(20)
     void fiftyRequestsForTheSameSlotCreateExactlyOneBooking() throws Exception {
-        List<Reply> replies = fireTogether(THREADS, i ->
+        List<Reply> replies = Parallel.fireTogether(THREADS, i ->
                 () -> api.book("PRO2", "S1", "2026-11-05T15:00", "Paciente " + i));
 
         long created = replies.stream().filter(r -> r.status() == 201).count();
@@ -94,7 +90,7 @@ class ConcurrencyTest {
             serviceIds.add(services[random.nextInt(services.length)]);
         }
 
-        List<Reply> replies = fireTogether(THREADS, i ->
+        List<Reply> replies = Parallel.fireTogether(THREADS, i ->
                 () -> api.book("PRO1", serviceIds.get(i), starts.get(i), "Paciente " + i));
 
         assertThat(replies).allSatisfy(r -> assertThat(r.status()).isIn(201, 409, 422));
@@ -119,7 +115,7 @@ class ConcurrencyTest {
         Instant end = start.plusSeconds(30 * 60);
         CyclicBarrier betweenCheckAndInsert = new CyclicBarrier(THREADS);
 
-        fireTogether(THREADS, i -> () -> {
+        Parallel.fireTogether(THREADS, i -> () -> {
             int overlapping = jdbc.sql("""
                     SELECT count(*) FROM naive_booking
                     WHERE professional_id = 'PRO2' AND starts_at < :end AND ends_at > :start
@@ -147,7 +143,7 @@ class ConcurrencyTest {
         Instant end = start.plusSeconds(30 * 60);
         CyclicBarrier betweenCheckAndInsert = new CyclicBarrier(THREADS);
 
-        List<Boolean> inserted = fireTogether(THREADS, i -> () -> {
+        List<Boolean> inserted = Parallel.fireTogether(THREADS, i -> () -> {
             boolean looksFree = bookings.findActiveOnDay("PRO2", start, end).isEmpty();
             betweenCheckAndInsert.await();
             return looksFree && bookings.insert(new Booking(UUID.randomUUID(), "PRO2", "S1", "Paciente " + i,
@@ -156,38 +152,6 @@ class ConcurrencyTest {
 
         assertThat(inserted.stream().filter(Boolean::booleanValue).count()).isEqualTo(1);
         assertThat(activeBookings("PRO2")).isEqualTo(1);
-    }
-
-    /** Todas as tarefas ficam prontas, esperam o mesmo sinal e disparam juntas. */
-    private static <T> List<T> fireTogether(int threads, IntFunction<Callable<T>> task) throws Exception {
-        ExecutorService pool = Executors.newFixedThreadPool(threads);
-        try {
-            CountDownLatch ready = new CountDownLatch(threads);
-            CountDownLatch go = new CountDownLatch(1);
-            List<Future<T>> futures = new ArrayList<>();
-            for (int i = 0; i < threads; i++) {
-                Callable<T> work = task.apply(i);
-                futures.add(pool.submit(() -> {
-                    ready.countDown();
-                    go.await();
-                    return work.call();
-                }));
-            }
-            ready.await();
-            go.countDown();
-
-            List<T> results = new ArrayList<>();
-            for (Future<T> future : futures) {
-                try {
-                    results.add(future.get());
-                } catch (ExecutionException e) {
-                    throw new AssertionError("Thread falhou: " + e.getCause(), e.getCause());
-                }
-            }
-            return results;
-        } finally {
-            pool.shutdownNow();
-        }
     }
 
     private long activeBookings(String professionalId) {

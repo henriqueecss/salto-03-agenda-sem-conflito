@@ -41,17 +41,25 @@ public class CatalogRepository {
     }
 
     public Optional<Professional> findProfessional(String id) {
+        // As listas saem em consultas separadas, depois que a primeira devolveu a conexao ao pool:
+        // pedir outra conexao de dentro do mapeador de linhas deixa cada pedido segurando uma e esperando
+        // a segunda, e com mais pedidos que conexoes o pool trava.
         return jdbc.sql("""
                 SELECT id, name, work_start, work_end, lunch_start, lunch_end
                 FROM professional WHERE id = :id
                 """)
                 .param("id", id)
-                .query((rs, n) -> new Professional(
+                .query((rs, n) -> new ProfessionalRow(
                         rs.getString("id"), rs.getString("name"),
                         rs.getObject("work_start", LocalTime.class), rs.getObject("work_end", LocalTime.class),
-                        rs.getObject("lunch_start", LocalTime.class), rs.getObject("lunch_end", LocalTime.class),
-                        weekdaysOf(id), serviceIdsOf(id)))
-                .optional();
+                        rs.getObject("lunch_start", LocalTime.class), rs.getObject("lunch_end", LocalTime.class)))
+                .optional()
+                .map(row -> new Professional(row.id(), row.name(), row.workStart(), row.workEnd(),
+                        row.lunchStart(), row.lunchEnd(), weekdaysOf(id), serviceIdsOf(id)));
+    }
+
+    private record ProfessionalRow(String id, String name, LocalTime workStart, LocalTime workEnd,
+            LocalTime lunchStart, LocalTime lunchEnd) {
     }
 
     public boolean isHoliday(LocalDate date) {
